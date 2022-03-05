@@ -16,6 +16,7 @@ def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
+        dist = 0
         coo = 0
 
         try:
@@ -26,24 +27,29 @@ def main():
                 if data != b"":
                     if data == b"temp\r\n":
                         print(data)
-                        client.sendall(caroToString(coo).encode())
+                        client.sendall(measure_temp().encode())
                     elif data == b"87\r\n":
-                        coo = change_car(coo, 0)
-                        client.sendall(caroToString(coo).encode())
+                        dist +=1
+                        go_forth()
+                        client.sendall(("10 " + str(dist)).encode())
                     elif data == b"83\r\n":
-                        coo = change_car(coo, -2)
-                        client.sendall(caroToString(coo).encode())
+                        dist -= 1
+                        go_back()
+                        client.sendall(("10 " + str(dist)).encode())
                     elif data == b"65\r\n":
-                        coo = change_car(coo, 1)
+                        coo += 1
+                        go_left()
                         client.sendall(caroToString(coo).encode())
 
                     elif data == b"68\r\n":
-                        coo = change_car(coo,-1)
+                        coo -= 1
+                        go_right()
                         client.sendall(caroToString(coo).encode())
                     else:
                         print(data)
                         client.sendall(data) # Echo back to client
-        except:
+        except Exception as e:
+            print(e)
             print("Closing socket")
             client.close()
             s.close()
@@ -51,6 +57,11 @@ def main():
 
 def go_forth():
   fc.forward(10)
+  time.sleep(.06)
+  fc.stop()
+
+def go_back():
+  fc.backward(10)
   time.sleep(.06)
   fc.stop()
 
@@ -76,12 +87,13 @@ def change_car(car_o ,target):
     car_o -= 1
     return change_car(car_o - 1, target)
 
-def caroToString(car_o):
+def caroToString(co):
+    car_o = co % 4
     if car_o == 0:
         return "north"
-    elif car_o == 1:
+    elif car_o == 1 or car_o == -3:
         return "west"
-    elif car_o == -1:
+    elif car_o == -1 or car_o == 3:
         return "east"
     else:
         return "south"

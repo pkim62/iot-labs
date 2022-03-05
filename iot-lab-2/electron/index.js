@@ -48,10 +48,19 @@ function send_data(str){
 
     // get the data from the server
     client.on('data', (data) => {
+
         if (input == "87") {
-          document.getElementById("direction").innerHTML = data;
+          arr = data.toString().split(" ")
+          speed = arr[0]
+          dis = arr[1]
+          document.getElementById("speed").innerHTML = speed;
+          document.getElementById("distance").innerHTML = dis;
         } else if (input == "83") {
-          document.getElementById("direction").innerHTML = data;
+          arr = data.toString().split(" ")
+          speed = arr[0]
+          dis = arr[1]
+          document.getElementById("speed").innerHTML = speed;
+          document.getElementById("distance").innerHTML = dis;
         } else if (input == "65") {
           document.getElementById("direction").innerHTML = data;
         } else if (input == "68") {
@@ -80,21 +89,25 @@ function updateKey(e) {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
         send_data("87");
+        console.log("up")
     }
     else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
         send_data("83");
+        console.log("down")
     }
     else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
         send_data("65");
+        console.log("left")
     }
     else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
         send_data("68");
+        console.log("right")
     }
 }
 

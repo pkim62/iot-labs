@@ -49,13 +49,13 @@ function send_data(str){
     // get the data from the server
     client.on('data', (data) => {
         if (input == "87") {
-          document.getElementById("direction").innerHTML = "north"
+          document.getElementById("direction").innerHTML = data;
         } else if (input == "83") {
-          document.getElementById("direction").innerHTML = "south"
+          document.getElementById("direction").innerHTML = data;
         } else if (input == "65") {
-          document.getElementById("direction").innerHTML = "west"
+          document.getElementById("direction").innerHTML = data;
         } else if (input == "68") {
-          document.getElementById("direction").innerHTML = "east"
+          document.getElementById("direction").innerHTML = data;
         }
 
         document.getElementById("bluetooth").innerHTML = data;

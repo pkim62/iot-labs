@@ -2,10 +2,10 @@ document.onkeydown = updateKey;
 document.onkeyup = resetKey;
 
 var server_port = 65432;
-var server_addr = "192.168.3.49";   // the IP address of your Raspberry PI
+var server_addr = "10.0.0.139";   // the IP address of your Raspberry PI
 
 function client(){
-    
+
     const net = require('net');
     var input = document.getElementById("message").value;
 
@@ -15,9 +15,49 @@ function client(){
         // send the message
         client.write(`${input}\r\n`);
     });
-    
+
     // get the data from the server
     client.on('data', (data) => {
+        if (input === "temp") {
+          document.getElementById("temperature").innerHTML = data;
+        }
+        document.getElementById("bluetooth").innerHTML = data;
+        console.log(data.toString());
+        client.end();
+        client.destroy();
+    });
+
+    client.on('end', () => {
+        console.log('disconnected from server');
+    });
+
+
+}
+
+function send_data(str){
+
+    const net = require('net');
+    var input = str
+
+    const client = net.createConnection({ port: server_port, host: server_addr }, () => {
+        // 'connect' listener.
+        console.log('connected to server!');
+        // send the message
+        client.write(`${input}\r\n`);
+    });
+
+    // get the data from the server
+    client.on('data', (data) => {
+        if (input == "87") {
+          document.getElementById("direction").innerHTML = "north"
+        } else if (input == "83") {
+          document.getElementById("direction").innerHTML = "south"
+        } else if (input == "65") {
+          document.getElementById("direction").innerHTML = "west"
+        } else if (input == "68") {
+          document.getElementById("direction").innerHTML = "east"
+        }
+
         document.getElementById("bluetooth").innerHTML = data;
         console.log(data.toString());
         client.end();
@@ -58,7 +98,7 @@ function updateKey(e) {
     }
 }
 
-// reset the key to the start state 
+// reset the key to the start state
 function resetKey(e) {
 
     e = e || window.event;

@@ -16,7 +16,7 @@ function client(){
         client.write(`${input}\r\n`);
     });
 
-    // get the data from the server
+    // get the data from the server s
     client.on('data', (data) => {
         if (input === "temp") {
           document.getElementById("temperature").innerHTML = data;

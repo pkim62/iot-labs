@@ -23,6 +23,7 @@ function client(){
         }
         document.getElementById("bluetooth").innerHTML = data;
         console.log(data.toString());
+        document.getElementById("speed").innerHTML = "0";
         client.end();
         client.destroy();
     });

@@ -9,7 +9,7 @@ import numpy as np
 import sys
 from gpiozero import CPUTemperature
 def main():
-    #got help from https://medium.com/@kevalpatel2106/monitor-the-core-temperature-of-your-raspberry-pi-3ddfdf82989f
+    #got help from https://projects.raspberrypi.org/en/projects/temperature-log/1
     HOST = "10.0.0.139" # IP address of your Raspberry PI
     PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 
@@ -33,7 +33,7 @@ def main():
                         go_forth()
                         client.sendall(("10 " + str(dist)).encode())
                     elif data == b"83\r\n":
-                        dist -= 1
+                        dist += 1
                         go_back()
                         client.sendall(("10 " + str(dist)).encode())
                     elif data == b"65\r\n":
